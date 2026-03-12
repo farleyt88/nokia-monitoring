@@ -668,7 +668,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_in_octets{source=~\"$device\", port_id=~\"$port\"}[5m]) * 8 / 1000000",
+          "expr": "irate(nokia_state_port_statistics_in_octets{source=~\"$device\", port_id=~\"$port\"}[30m]) * 8 / 1000000",
           "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         }
@@ -769,7 +769,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_out_octets{source=~\"$device\", port_id=~\"$port\"}[5m]) * 8 / 1000000",
+          "expr": "irate(nokia_state_port_statistics_out_octets{source=~\"$device\", port_id=~\"$port\"}[30m]) * 8 / 1000000",
           "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "A"
         }
@@ -860,7 +860,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_in_errors{source=~\"$device\", port_id=~\"$port\"}[5m])",
+          "expr": "irate(nokia_state_port_statistics_in_errors{source=~\"$device\", port_id=~\"$port\"}[30m])",
           "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         },
@@ -869,7 +869,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_out_errors{source=~\"$device\", port_id=~\"$port\"}[5m])",
+          "expr": "irate(nokia_state_port_statistics_out_errors{source=~\"$device\", port_id=~\"$port\"}[30m])",
           "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "B"
         }
@@ -948,7 +948,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_in_discards{source=~\"$device\", port_id=~\"$port\"}[5m])",
+          "expr": "irate(nokia_state_port_statistics_in_discards{source=~\"$device\", port_id=~\"$port\"}[30m])",
           "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         },
@@ -957,7 +957,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_port_statistics_out_discards{source=~\"$device\", port_id=~\"$port\"}[5m])",
+          "expr": "irate(nokia_state_port_statistics_out_discards{source=~\"$device\", port_id=~\"$port\"}[30m])",
           "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "B"
         }
@@ -1364,7 +1364,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_router_interface_statistics_in_octets{source=~\"$device\"}[5m]) * 8 / 1000000",
+          "expr": "irate(nokia_state_router_interface_statistics_in_octets{source=~\"$device\"}[30m]) * 8 / 1000000",
           "legendFormat": "{{source}} | {{interface_name}} IN",
           "refId": "A"
         },
@@ -1373,7 +1373,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(nokia_state_router_interface_statistics_out_octets{source=~\"$device\"}[5m]) * 8 / 1000000",
+          "expr": "irate(nokia_state_router_interface_statistics_out_octets{source=~\"$device\"}[30m]) * 8 / 1000000",
           "legendFormat": "{{source}} | {{interface_name}} OUT",
           "refId": "B"
         }
