@@ -383,16 +383,21 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Port operational state over time. Green=Up (1), Red=Down (0). Legend format: device | port.",
+      "description": "Current operational state of all ports. Updates every 30 seconds.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "fillOpacity": 90,
-            "lineWidth": 0,
-            "spanNulls": false
+            "align": "center",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "displayMode": "color-background",
+            "filterable": true,
+            "inspect": false,
+            "minWidth": 80
           },
           "mappings": [
             {
@@ -424,7 +429,71 @@
               }
             ]
           }
-        }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Device"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "State"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -434,22 +503,52 @@
       },
       "id": 11,
       "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "mergeValues": false,
-        "rowHeight": 0.9,
-        "showValue": "always",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Port"
+          }
+        ]
       },
-      "title": "Port Oper-State",
-      "type": "state-timeline",
+      "title": "Port Status (Current)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns",
+            "valueLabel": ""
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true,
+              "collector": true,
+              "vendor": true,
+              "instance": true
+            },
+            "renameByName": {
+              "source": "Device",
+              "port_port_id": "Port",
+              "Value": "State"
+            }
+          }
+        }
+      ],
+      "type": "table",
       "targets": [
         {
           "datasource": {
@@ -457,6 +556,7 @@
             "uid": "${datasource}"
           },
           "expr": "nokia_state_port_oper_state{source=~\"$device\", port_port_id=~\"$port\"}",
+          "instant": true,
           "legendFormat": "{{source}} | {{port_port_id}}",
           "refId": "A"
         }
