@@ -1154,16 +1154,19 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "L3 router interface operational state over time.",
+      "description": "Current operational state of all L3 router interfaces.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "fillOpacity": 90,
-            "lineWidth": 0,
-            "spanNulls": false
+            "align": "center",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "filterable": true,
+            "minWidth": 80
           },
           "mappings": [
             {
@@ -1195,7 +1198,49 @@
               }
             ]
           }
-        }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Interface"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1205,22 +1250,51 @@
       },
       "id": 51,
       "options": {
-        "alignValue": "left",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "mergeValues": false,
-        "rowHeight": 0.9,
-        "showValue": "always",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Interface"
+          }
+        ]
       },
-      "title": "Router Interface Oper-State",
-      "type": "state-timeline",
+      "title": "Router Interface Status (Current)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true,
+              "collector": true,
+              "vendor": true,
+              "instance": true,
+              "subscription_name": true,
+              "source": true,
+              "router_name": true
+            },
+            "indexByName": {
+              "interface_name": 0,
+              "Value": 1
+            },
+            "renameByName": {
+              "interface_name": "Interface",
+              "Value": "Status"
+            }
+          }
+        }
+      ],
+      "type": "table",
       "targets": [
         {
           "datasource": {
@@ -1228,7 +1302,9 @@
             "uid": "${datasource}"
           },
           "expr": "nokia_state_router_interface_oper_state{source=~\"$device\"}",
-          "legendFormat": "{{source}} | {{interface_name}}",
+          "instant": true,
+          "format": "table",
+          "legendFormat": "",
           "refId": "A"
         }
       ]
