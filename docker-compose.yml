@@ -46,6 +46,8 @@ services:
       - "9090:9090"       # Prometheus UI + API (point Grafana here)
     networks:
       - nokia-monitoring
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # Linux: lets containers reach the host by name
     depends_on:
       - gnmic
 
