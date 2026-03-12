@@ -30,12 +30,23 @@ targets:
   #     - interface-stats
   #     - system-health
 
-  # ── PLACEHOLDER — replace with your actual Nokia routers ─────────────────
-  192.168.1.1:57400:
+  # ── YOUR NOKIA ROUTERS — add one entry per device ────────────────────────
+  # The key must be quoted if it contains a colon (IP:port format).
+  # Set 'name' to the router hostname — this becomes the 'source' label in Grafana.
+  "10.220.32.52:57400":
+    name: OKTULSA-LAB-EC2
     subscriptions:
       - port-stats
       - interface-stats
       - system-health
+
+  # Add more routers below:
+  # "10.220.32.53:57400":
+  #   name: ROUTER-HOSTNAME-2
+  #   subscriptions:
+  #     - port-stats
+  #     - interface-stats
+  #     - system-health
 
 # ── Subscriptions ─────────────────────────────────────────────────────────────
 # These define what data to collect and how often.
