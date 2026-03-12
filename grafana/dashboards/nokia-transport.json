@@ -396,19 +396,19 @@
           },
           "mappings": [
             {
+              "type": "value",
               "options": {
                 "0": {
                   "color": "red",
                   "index": 0,
-                  "text": "DOWN"
+                  "text": "Down"
                 },
                 "1": {
                   "color": "green",
                   "index": 1,
-                  "text": "UP"
+                  "text": "Up"
                 }
-              },
-              "type": "value"
+              }
             }
           ],
           "thresholds": {
@@ -440,9 +440,9 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "mergeValues": true,
+        "mergeValues": false,
         "rowHeight": 0.9,
-        "showValue": "auto",
+        "showValue": "always",
         "tooltip": {
           "mode": "single",
           "sort": "none"
@@ -1068,19 +1068,19 @@
           },
           "mappings": [
             {
+              "type": "value",
               "options": {
                 "0": {
                   "color": "red",
                   "index": 0,
-                  "text": "DOWN"
+                  "text": "Down"
                 },
                 "1": {
                   "color": "green",
                   "index": 1,
-                  "text": "UP"
+                  "text": "Up"
                 }
-              },
-              "type": "value"
+              }
             }
           ],
           "thresholds": {
@@ -1112,9 +1112,9 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "mergeValues": true,
+        "mergeValues": false,
         "rowHeight": 0.9,
-        "showValue": "auto",
+        "showValue": "always",
         "tooltip": {
           "mode": "single",
           "sort": "none"
