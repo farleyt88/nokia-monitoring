@@ -86,10 +86,10 @@ subscriptions:
     sample-interval: 60s
 
 # ── Processors ───────────────────────────────────────────────────────────────
-# gnmic drops string/enum values from Prometheus by default.
-# This processor converts oper-state strings to integers before export.
+# gnmic drops string/enum values from Prometheus (needs float64).
+# Two-step: replace string "up"/"down" → "1"/"0", then convert string→int.
 processors:
-  oper-state-to-int:
+  oper-state-string-replace:
     event-strings:
       value-names:
         - ".*oper.state.*"
@@ -106,6 +106,16 @@ processors:
             apply-on: "value"
             old: "^down-requested$"
             new: "0"
+        - replace:
+            apply-on: "value"
+            old: "^link-down$"
+            new: "0"
+
+  oper-state-to-int:
+    event-convert:
+      value-names:
+        - ".*oper.state.*"
+      type: int
 
 # ── Outputs ──────────────────────────────────────────────────────────────────
 outputs:
@@ -120,7 +130,8 @@ outputs:
     expiration: 90s
     debug: false
     event-processors:
-      - oper-state-to-int
+      - oper-state-string-replace   # Step 1: "up"→"1", "down"→"0" (strings)
+      - oper-state-to-int           # Step 2: "1"/"0" strings → int (Prometheus-ready)
 
 # ── Optional: log level ───────────────────────────────────────────────────────
 # log: true
