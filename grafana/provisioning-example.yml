@@ -1,0 +1,19 @@
+# Optional: Grafana dashboard provisioning config
+# Place this in your Grafana container's /etc/grafana/provisioning/dashboards/
+# so the dashboard loads automatically on container start.
+#
+# If you're managing Grafana manually, just import the JSON via
+# Grafana UI → Dashboards → Import → Upload JSON file
+
+apiVersion: 1
+
+providers:
+  - name: Nokia Transport
+    orgId: 1
+    folder: Nokia
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/nokia
