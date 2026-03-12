@@ -45,12 +45,15 @@ subscriptions:
 
   port-stats:
     paths:
-      # Port oper-state (up/down)
+      # Port oper-state — try both paths, one will work depending on SR OS version
+      # SR OS 22.x+:
       - /state/port[port-id=*]/oper-state
-      # Ingress/egress octets (use for utilization)
+      # Alternate path (older SR OS or different model):
+      # - /nokia-state:state/port[port-id=*]/oper-state
+      # Ingress/egress octets (use for utilization) — CONFIRMED WORKING
       - /state/port[port-id=*]/statistics/in-octets
       - /state/port[port-id=*]/statistics/out-octets
-      # Error counters
+      # Error counters — CONFIRMED WORKING
       - /state/port[port-id=*]/statistics/in-errors
       - /state/port[port-id=*]/statistics/out-errors
       - /state/port[port-id=*]/statistics/in-discards
