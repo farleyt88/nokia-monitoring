@@ -290,7 +290,7 @@
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "nokia_state_port_oper_state{source=~\"$device\", port_id=~\"$port\"}",
-          "legendFormat": "{{source}} | {{port_id}}",
+          "legendFormat": "{{source}} | {{port_port_id}}",
           "refId": "A"
         }
       ]
@@ -355,7 +355,7 @@
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_in_octets{source=~\"$device\", port_id=~\"$port\"}[5m]) * 8 / 1000000",
-          "legendFormat": "{{source}} | {{port_id}} IN",
+          "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         }
       ]
@@ -412,7 +412,7 @@
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_out_octets{source=~\"$device\", port_id=~\"$port\"}[5m]) * 8 / 1000000",
-          "legendFormat": "{{source}} | {{port_id}} OUT",
+          "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "A"
         }
       ]
@@ -466,13 +466,13 @@
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_in_errors{source=~\"$device\", port_id=~\"$port\"}[5m])",
-          "legendFormat": "{{source}} | {{port_id}} IN",
+          "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         },
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_out_errors{source=~\"$device\", port_id=~\"$port\"}[5m])",
-          "legendFormat": "{{source}} | {{port_id}} OUT",
+          "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "B"
         }
       ]
@@ -518,13 +518,13 @@
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_in_discards{source=~\"$device\", port_id=~\"$port\"}[5m])",
-          "legendFormat": "{{source}} | {{port_id}} IN",
+          "legendFormat": "{{source}} | {{port_port_id}} IN",
           "refId": "A"
         },
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "expr": "rate(nokia_state_port_statistics_out_discards{source=~\"$device\", port_id=~\"$port\"}[5m])",
-          "legendFormat": "{{source}} | {{port_id}} OUT",
+          "legendFormat": "{{source}} | {{port_port_id}} OUT",
           "refId": "B"
         }
       ]
