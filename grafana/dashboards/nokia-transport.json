@@ -555,8 +555,9 @@
           },
           "expr": "nokia_state_port_oper_state{source=~\"$device\", port_port_id=~\"$port\"}",
           "instant": true,
-          "legendFormat": "{{source}} | {{port_port_id}}",
-          "refId": "A"
+          "legendFormat": "",
+          "refId": "A",
+          "format": "table"
         }
       ]
     },
