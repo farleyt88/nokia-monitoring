@@ -85,6 +85,28 @@ subscriptions:
     stream-mode: sample
     sample-interval: 60s
 
+# ── Processors ───────────────────────────────────────────────────────────────
+# gnmic drops string/enum values from Prometheus by default.
+# This processor converts oper-state strings to integers before export.
+processors:
+  oper-state-to-int:
+    event-strings:
+      value-names:
+        - ".*oper.state.*"
+      transforms:
+        - replace:
+            apply-on: "value"
+            old: "^up$"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "^down$"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "^down-requested$"
+            new: "0"
+
 # ── Outputs ──────────────────────────────────────────────────────────────────
 outputs:
   prometheus-output:
@@ -97,6 +119,8 @@ outputs:
     # How long to cache metrics between scrapes (should be >= sample-interval)
     expiration: 90s
     debug: false
+    event-processors:
+      - oper-state-to-int
 
 # ── Optional: log level ───────────────────────────────────────────────────────
 # log: true
