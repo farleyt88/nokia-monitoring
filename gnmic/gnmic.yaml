@@ -1,0 +1,100 @@
+# gnmic configuration — Nokia SR OS gNMI Collector
+# Docs: https://gnmic.openconfig.net
+
+# ── Global credentials (can be overridden per-target) ────────────────────────
+username: admin
+password: CHANGEME
+# Nokia SR OS requires TLS by default.
+# skip-verify skips cert validation (fine for internal/lab use).
+# For production, point tls-ca to your cert bundle instead.
+skip-verify: true
+encoding: json_ietf
+timeout: 10s
+
+# ── Targets ──────────────────────────────────────────────────────────────────
+# Add every Nokia device here. Port 57400 is the default gRPC/gNMI port on SR OS.
+# To override credentials per-device, add username/password under the target.
+targets:
+  # nokia-router-1.yourdomain.com:57400:
+  #   subscriptions:
+  #     - port-stats
+  #     - interface-stats
+  #     - system-health
+  #
+  # Example with per-device credentials:
+  # nokia-router-2.yourdomain.com:57400:
+  #   username: readonly
+  #   password: DEVICEPASS
+  #   subscriptions:
+  #     - port-stats
+  #     - interface-stats
+  #     - system-health
+
+  # ── PLACEHOLDER — replace with your actual Nokia routers ─────────────────
+  192.168.1.1:57400:
+    subscriptions:
+      - port-stats
+      - interface-stats
+      - system-health
+
+# ── Subscriptions ─────────────────────────────────────────────────────────────
+# These define what data to collect and how often.
+# Paths use Nokia SR OS YANG model paths.
+# sample-interval: how often to get a snapshot (stream mode)
+subscriptions:
+
+  port-stats:
+    paths:
+      # Port oper-state (up/down)
+      - /state/port[port-id=*]/oper-state
+      # Ingress/egress octets (use for utilization)
+      - /state/port[port-id=*]/statistics/in-octets
+      - /state/port[port-id=*]/statistics/out-octets
+      # Error counters
+      - /state/port[port-id=*]/statistics/in-errors
+      - /state/port[port-id=*]/statistics/out-errors
+      - /state/port[port-id=*]/statistics/in-discards
+      - /state/port[port-id=*]/statistics/out-discards
+    mode: stream
+    stream-mode: sample
+    sample-interval: 30s
+
+  interface-stats:
+    paths:
+      # Router interfaces (L3)
+      - /state/router[router-name=Base]/interface[interface-name=*]/oper-state
+      - /state/router[router-name=Base]/interface[interface-name=*]/statistics/in-octets
+      - /state/router[router-name=Base]/interface[interface-name=*]/statistics/out-octets
+    mode: stream
+    stream-mode: sample
+    sample-interval: 30s
+
+  system-health:
+    paths:
+      # CPU utilization
+      - /state/system/cpu[sample-period=60]/summary/usage
+      # Memory
+      - /state/system/memory-pools/memory-pool[name=*]/in-use
+      - /state/system/memory-pools/memory-pool[name=*]/total
+      # System uptime
+      - /state/system/up-time
+    mode: stream
+    stream-mode: sample
+    sample-interval: 60s
+
+# ── Outputs ──────────────────────────────────────────────────────────────────
+outputs:
+  prometheus-output:
+    type: prometheus
+    listen: :9804          # Prometheus scrapes this endpoint
+    path: /metrics
+    # Adds a label to every metric identifying the source as gnmic
+    # Useful in Grafana to filter Nokia metrics vs. other sources
+    metric-prefix: nokia
+    # How long to cache metrics between scrapes (should be >= sample-interval)
+    expiration: 90s
+    debug: false
+
+# ── Optional: log level ───────────────────────────────────────────────────────
+# log: true
+# log-file: /tmp/gnmic.log

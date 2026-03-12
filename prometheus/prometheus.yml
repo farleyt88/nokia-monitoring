@@ -1,0 +1,41 @@
+# Prometheus configuration — Nokia monitoring stack
+# Docs: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+
+global:
+  scrape_interval: 30s        # How often to scrape targets
+  evaluation_interval: 30s    # How often to evaluate alerting rules
+  # Label added to all metrics from this Prometheus instance
+  # Useful if you ever federate multiple Prometheus servers into Grafana
+  external_labels:
+    instance: nokia-monitoring
+
+# ── Scrape configs ────────────────────────────────────────────────────────────
+scrape_configs:
+
+  # Scrape gnmic's Prometheus exposition endpoint
+  - job_name: nokia_gnmi
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+          - gnmic:9804       # Container name resolves on the nokia-monitoring network
+        labels:
+          collector: gnmic
+          vendor: nokia
+
+  # Prometheus self-monitoring (useful for Grafana health dashboard)
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - localhost:9090
+
+# ── Alerting rules (optional — add rule files here later) ────────────────────
+# rule_files:
+#   - /etc/prometheus/rules/*.yml
+
+# ── Alertmanager (optional) ──────────────────────────────────────────────────
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#             - alertmanager:9093
