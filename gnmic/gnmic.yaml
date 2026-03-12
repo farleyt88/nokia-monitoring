@@ -4,10 +4,10 @@
 # ── Global credentials (can be overridden per-target) ────────────────────────
 username: admin
 password: CHANGEME
-# Nokia SR OS requires TLS by default.
-# skip-verify skips cert validation (fine for internal/lab use).
-# For production, point tls-ca to your cert bundle instead.
-skip-verify: true
+# insecure: true = plain gRPC, no TLS (use when router has TLS disabled)
+# skip-verify: true = TLS enabled but skip cert validation
+# Use insecure: true if your CLI needs --insecure to connect
+insecure: true
 encoding: json_ietf
 timeout: 10s
 
