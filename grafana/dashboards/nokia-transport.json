@@ -523,13 +523,6 @@
       "title": "Port Status (Current)",
       "transformations": [
         {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns",
-            "valueLabel": ""
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -538,12 +531,17 @@
               "job": true,
               "collector": true,
               "vendor": true,
-              "instance": true
+              "instance": true,
+              "subscription_name": true,
+              "source": true
+            },
+            "indexByName": {
+              "port_port_id": 0,
+              "Value": 1
             },
             "renameByName": {
-              "source": "Device",
               "port_port_id": "Port",
-              "Value": "State"
+              "Value": "Status"
             }
           }
         }
