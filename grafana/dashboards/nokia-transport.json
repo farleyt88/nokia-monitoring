@@ -62,14 +62,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(nokia_state_port_statistics_in_octets, source)",
+        "definition": "label_values(nokia_state_port_oper_state, source)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "device",
         "options": [],
         "query": {
-          "query": "label_values(nokia_state_port_statistics_in_octets, source)",
+          "query": "label_values(nokia_state_port_oper_state, source)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -87,14 +87,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(nokia_state_port_oper_state{source=~\"$device\"}, port_id)",
+        "definition": "label_values(nokia_state_port_oper_state{source=~\"$device\"}, port_port_id)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "port",
         "options": [],
         "query": {
-          "query": "label_values(nokia_state_port_oper_state{source=~\"$device\"}, port_id)",
+          "query": "label_values(nokia_state_port_oper_state{source=~\"$device\"}, port_port_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -231,7 +231,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(nokia_state_port_statistics_in_octets{source=~\"$device\"})",
+          "expr": "count(nokia_state_port_oper_state{source=~\"$device\"})",
           "instant": true,
           "legendFormat": "Total Ports",
           "refId": "A"
@@ -295,7 +295,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(nokia_state_port_statistics_in_octets{source=~\"$device\"})",
+          "expr": "count(nokia_state_port_oper_state{source=~\"$device\"} == 1)",
           "instant": true,
           "legendFormat": "Ports Up",
           "refId": "A"
@@ -359,7 +359,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(nokia_state_port_statistics_in_octets{source=~\"$device\"}) or vector(0)",
+          "expr": "count(nokia_state_port_oper_state{source=~\"$device\"} == 0) or vector(0)",
           "instant": true,
           "legendFormat": "Ports Down",
           "refId": "A"
@@ -383,7 +383,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Port operational state over time. Green=Up (1), Red=Down (0). Legend format: device | port. NOTE: oper-state data not yet flowing \u2014 check gnmic.yaml YANG path for SR OS version.",
+      "description": "Port operational state over time. Green=Up (1), Red=Down (0). Legend format: device | port.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -456,7 +456,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "nokia_state_port_statistics_in_octets{source=~\"$device\", port_id=~\"$port\"}",
+          "expr": "nokia_state_port_oper_state{source=~\"$device\", port_port_id=~\"$port\"}",
           "legendFormat": "{{source}} | {{port_port_id}}",
           "refId": "A"
         }
@@ -1055,7 +1055,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "L3 router interface operational state over time. NOTE: oper-state data not yet flowing \u2014 check gnmic.yaml YANG path for SR OS version.",
+      "description": "L3 router interface operational state over time.",
       "fieldConfig": {
         "defaults": {
           "color": {
