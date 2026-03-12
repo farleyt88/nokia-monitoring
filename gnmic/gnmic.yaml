@@ -44,6 +44,7 @@ targets:
 subscriptions:
 
   port-stats:
+    suppress-redundant: false   # Force updates every sample-interval even if value unchanged
     paths:
       # Port oper-state — try both paths, one will work depending on SR OS version
       # SR OS 22.x+:
@@ -63,6 +64,7 @@ subscriptions:
     sample-interval: 30s
 
   interface-stats:
+    suppress-redundant: false
     paths:
       # Router interfaces (L3)
       - /state/router[router-name=Base]/interface[interface-name=*]/oper-state
@@ -73,6 +75,7 @@ subscriptions:
     sample-interval: 30s
 
   system-health:
+    suppress-redundant: false
     paths:
       # CPU utilization
       - /state/system/cpu[sample-period=60]/summary/usage
